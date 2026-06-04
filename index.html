@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Амалия! 😡</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&family=M+PLUS+Rounded+1c:wght@700;900&display=swap" rel="stylesheet"/>
+<style>
+:root {
+--pink: #ff4f8b;
+--pink2: #ff85b3;
+--blue: #5bc8f5;
+--yellow: #ffe96a;
+--purple: #9b59f5;
+--dark: #1a0a2e;
+--dark2: #2d1057;
+--white: #fff0f8;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+min-height: 100vh;
+background: var(--dark);
+font-family: 'M PLUS Rounded 1c', 'Nunito', sans-serif;
+display: flex;
+align-items: center;
+justify-content: center;
+overflow: hidden;
+position: relative;
+}
+
+/* Starry background */
+.stars {
+position: fixed;
+inset: 0;
+z-index: 0;
+pointer-events: none;
+}
+.star {
+position: absolute;
+border-radius: 50%;
+background: #fff;
+animation: twinkle var(--d, 2s) infinite alternate;
+opacity: 0;
+}
+@keyframes twinkle {
+from { opacity: 0.1; transform: scale(1); }
+to { opacity: 0.8; transform: scale(1.4); }
+}
+
+/* Floating sakura petals */
+.petal {
+position: fixed;
+font-size: 1.4rem;
+opacity: 0.7;
+animation: fall linear infinite;
+z-index: 0;
+pointer-events: none;
+}
+@keyframes fall {
+0% { transform: translateY(-60px) rotate(0deg); opacity: 0.8; }
+100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+
+/* Main card */
+.card {
+position: relative;
+z-index: 10;
+background: linear-gradient(135deg, #2d1057cc 0%, #1a0a2eee 100%);
+border: 3px solid var(--pink);
+border-radius: 32px;
+padding: 42px 38px 38px;
+max-width: 430px;
+width: 92vw;
+box-shadow:
+0 0 40px #ff4f8b66,
+0 0 80px #9b59f533,
+inset 0 1px 0 #ff85b355;
+text-align: center;
+animation: cardIn 0.8s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes cardIn {
+from { opacity: 0; transform: scale(0.7) translateY(40px); }
+to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Decorative corners */
+.card::before, .card::after {
+content: '✦';
+position: absolute;
+font-size: 1.5rem;
+color: var(--pink);
+filter: drop-shadow(0 0 8px var(--pink));
+}
+.card::before { top: 14px; left: 18px; }
+.card::after { bottom: 14px; right: 18px; }
+
+/* Anime face */
+.face {
+font-size: 5rem;
+display: block;
+margin-bottom: 6px;
+animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) infinite;
+filter: drop-shadow(0 0 12px #ff4f8b);
+}
+@keyframes shake {
+0%,100% { transform: rotate(-4deg); }
+50% { transform: rotate(4deg); }
+}
+
+/* Title */
+.title {
+font-size: 1.55rem;
+font-weight: 900;
+color: var(--white);
+line-height: 1.35;
+text-shadow: 0 0 16px var(--pink), 0 2px 0 var(--dark);
+margin-bottom: 6px;
+animation: pulse 2s infinite;
+}
+@keyframes pulse {
+0%,100% { text-shadow: 0 0 16px var(--pink), 0 2px 0 var(--dark); }
+50% { text-shadow: 0 0 28px var(--pink2), 0 2px 0 var(--dark); }
+}
+
+.angry {
+color: var(--yellow);
+font-size: 1.9rem;
+}
+
+.subtitle {
+font-size: 0.9rem;
+color: var(--blue);
+margin-bottom: 26px;
+letter-spacing: 0.04em;
+opacity: 0.85;
+}
+
+/* Divider */
+.divider {
+border: none;
+height: 2px;
+background: linear-gradient(90deg, transparent, var(--pink), var(--purple), var(--blue), transparent);
+border-radius: 2px;
+margin: 0 0 24px;
+}
+
+/* Options */
+.options-label {
+font-size: 0.85rem;
+color: var(--pink2);
+text-transform: uppercase;
+letter-spacing: 0.12em;
+margin-bottom: 14px;
+opacity: 0.9;
+}
+
+.option {
+display: flex;
+align-items: center;
+gap: 14px;
+background: linear-gradient(90deg, #2d105780, #1a0a2e88);
+border: 2px solid transparent;
+border-radius: 16px;
+padding: 14px 18px;
+margin-bottom: 14px;
+cursor: pointer;
+transition: all 0.28s cubic-bezier(.34,1.56,.64,1);
+position: relative;
+overflow: hidden;
+user-select: none;
+}
+.option::before {
+content: '';
+position: absolute;
+inset: 0;
+border-radius: 14px;
+opacity: 0;
+transition: opacity 0.3s;
+}
+.option:hover {
+transform: translateX(6px) scale(1.02);
+}
+.option:hover::before { opacity: 1; }
+
+.option.tiktok:hover, .option.tiktok.checked {
+border-color: #ff4f8b;
+box-shadow: 0 0 18px #ff4f8b55;
+background: linear-gradient(90deg, #ff4f8b22, #2d1057aa);
+}
+.option.games:hover, .option.games.checked {
+border-color: var(--blue);
+box-shadow: 0 0 18px #5bc8f555;
+background: linear-gradient(90deg, #5bc8f522, #2d1057aa);
+}
+
+/* Custom checkbox */
+.checkbox {
+width: 28px;
+height: 28px;
+border-radius: 8px;
+border: 2px solid var(--pink2);
+display: flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+transition: all 0.25s;
+background: #1a0a2e;
+position: relative;
+z-index: 1;
+}
+.option.games .checkbox { border-color: var(--blue); }
+
+.checkbox-inner {
+font-size: 1.1rem;
+opacity: 0;
+transform: scale(0.4) rotate(-20deg);
+transition: all 0.3s cubic-bezier(.34,1.56,.64,1);
+}
+.option.checked .checkbox-inner {
+opacity: 1;
+transform: scale(1) rotate(0deg);
+}
+.option.tiktok.checked .checkbox { background: #ff4f8b33; border-color: var(--pink); }
+.option.games.checked .checkbox { background: #5bc8f522; border-color: var(--blue); }
+
+/* Option text */
+.option-text {
+flex: 1;
+text-align: left;
+position: relative;
+z-index: 1;
+}
+.option-name {
+font-size: 1.1rem;
+font-weight: 900;
+color: var(--white);
+}
+.option-desc {
+font-size: 0.75rem;
+color: #aaa;
+margin-top: 2px;
+}
+.option.checked .option-name { color: var(--yellow); }
+
+.option-icon {
+font-size: 2rem;
+position: relative;
+z-index: 1;
+transition: transform 0.3s;
+}
+.option:hover .option-icon,
+.option.checked .option-icon {
+transform: scale(1.2) rotate(-8deg);
+}
+
+/* Warning message that appears after check */
+.warning {
+display: none;
+margin-top: 10px;
+padding: 10px 16px;
+border-radius: 12px;
+background: linear-gradient(90deg, #ff4f8b22, #9b59f522);
+border: 1px solid var(--pink);
+color: var(--yellow);
+font-size: 0.88rem;
+font-weight: 700;
+animation: popIn 0.4s cubic-bezier(.34,1.56,.64,1) both;
+}
+.warning.show { display: block; }
+@keyframes popIn {
+from { opacity: 0; transform: scale(0.8); }
+to { opacity: 1; transform: scale(1); }
+}
+
+/* Bottom badge */
+.badge {
+margin-top: 22px;
+display: inline-block;
+background: linear-gradient(90deg, var(--pink), var(--purple));
+color: #fff;
+font-size: 0.78rem;
+font-weight: 700;
+padding: 5px 18px;
+border-radius: 999px;
+letter-spacing: 0.06em;
+box-shadow: 0 0 14px #ff4f8b55;
+}
+
+/* Floating hearts */
+.heart {
+position: fixed;
+font-size: 1.2rem;
+pointer-events: none;
+z-index: 100;
+animation: floatUp 1.2s ease-out forwards;
+}
+@keyframes floatUp {
+from { opacity: 1; transform: translateY(0) scale(1); }
+to { opacity: 0; transform: translateY(-80px) scale(1.5); }
+}
+</style>
+</head>
+<body>
+
+<!-- Stars -->
+<div class="stars" id="stars"></div>
+
+<!-- Petals -->
+<div id="petals"></div>
+
+<!-- Main Card -->
+<div class="card">
+<span class="face">😤</span>
+
+<div class="title">
+Амалия, хватит<br>
+смотреть / играть<br>
+<span class="angry">😡 в телефоне!</span>
+</div>
+<div class="subtitle">— серьёзное предупреждение аниме-персонажа —</div>
+
+<hr class="divider"/>
+
+<div class="options-label">✦ Признайся — что ты делаешь? ✦</div>
+
+<!-- TikTok Option -->
+<div class="option tiktok" id="opt-tiktok" onclick="toggle('tiktok')">
+<div class="checkbox">
+<span class="checkbox-inner">✔</span>
+</div>
+<div class="option-text">
+<div class="option-name">ТикТок</div>
+<div class="option-desc">Бесконечная лента роликов...</div>
+</div>
+<div class="option-icon">🎵</div>
+</div>
+
+<!-- Games Option -->
+<div class="option games" id="opt-games" onclick="toggle('games')">
+<div class="checkbox">
+<span class="checkbox-inner">✔</span>
+</div>
+<div class="option-text">
+<div class="option-name">Игры</div>
+<div class="option-desc">Ещё один уровень... и всё!</div>
+</div>
+<div class="option-icon">🎮</div>
+</div>
+
+<div class="warning" id="warning"></div>
+
+<div class="badge">✨ Лучше учись, Амалия~ ✨</div>
+</div>
+
+<script>
+// Generate stars
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 80; i++) {
+const s = document.createElement('div');
+s.className = 'star';
+const size = Math.random() * 3 + 1;
+s.style.cssText = `
+left:${Math.random()*100}%;
+top:${Math.random()*100}%;
+width:${size}px;
+height:${size}px;
+--d:${(Math.random()*2+1).toFixed(1)}s;
+animation-delay:${(Math.random()*3).toFixed(1)}s;
+`;
+starsEl.appendChild(s);
+}
+
+// Generate petals
+const petalsEl = document.getElementById('petals');
+const petalChars = ['🌸','💮','🌺','✿','❀'];
+for (let i = 0; i < 12; i++) {
+const p = document.createElement('div');
+p.className = 'petal';
+p.textContent = petalChars[Math.floor(Math.random()*petalChars.length)];
+p.style.cssText = `
+left:${Math.random()*100}%;
+animation-duration:${(Math.random()*6+5).toFixed(1)}s;
+animation-delay:${(Math.random()*6).toFixed(1)}s;
+font-size:${(Math.random()*1+0.9).toFixed(1)}rem;
+`;
+petalsEl.appendChild(p);
+}
+
+// State
+const state = { tiktok: false, games: false };
+
+const messages = {
+tiktok: '🎵 ТикТок засасывает! Закрывай немедленно, Амалия! 😤',
+games: '🎮 «Ещё одна игра» — и так 3 часа подряд! Стоп! 😡',
+both: '😱 И ТикТок И игры?! Амалия!!! Телефон — на стол! 🔥'
+};
+
+function toggle(id) {
+state[id] = !state[id];
+document.getElementById('opt-' + id).classList.toggle('checked', state[id]);
+
+const warn = document.getElementById('warning');
+if (state.tiktok && state.games) {
+warn.textContent = messages.both;
+warn.classList.add('show');
+} else if (state.tiktok) {
+warn.textContent = messages.tiktok;
+warn.classList.add('show');
+} else if (state.games) {
+warn.textContent = messages.games;
+warn.classList.add('show');
+} else {
+warn.classList.remove('show');
+}
+
+// Spawn floating emojis
+if (state[id]) spawnHearts(id);
+}
+
+function spawnHearts(type) {
+const emojis = type === 'tiktok' ? ['🎵','💃','😤','📵'] : ['🎮','👾','😡','🚫'];
+for (let i = 0; i < 5; i++) {
+setTimeout(() => {
+const el = document.createElement('div');
+el.className = 'heart';
+el.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+el.style.left = (30 + Math.random() * 40) + 'vw';
+el.style.top = (40 + Math.random() * 20) + 'vh';
+document.body.appendChild(el);
+setTimeout(() => el.remove(), 1300);
+}, i * 120);
+}
+}
+</script>
+</body>
+</html>
